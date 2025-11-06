@@ -12,14 +12,13 @@ export default function Header() {
           <Image
             src="/image/logo.png"
             alt="Logo do MarketCal"
-            width={56}
-            height={56}
+            width={215}
+            height={215}
             className={styles.logoImg}
             priority
           />
         </div>
-        
-        {/* Navegação Desktop */}
+
         <nav className={styles.nav}>
           <ul className={styles.navList}>
             <li className={styles.navItem}>
@@ -28,17 +27,18 @@ export default function Header() {
               </Link>
             </li>
             <li className={styles.navItem}>
-            <Link href="/" className={styles.navLink}>
-            Dashboard
+              <Link href="/" className={styles.navLink}>
+                Dashboard
               </Link>
             </li>
             <li className={styles.navItem}>
-            <Link href="/" className={styles.navLink}>
+              <Link href="/" className={styles.navLink}>
                 Influencers
               </Link>
             </li>
           </ul>
         </nav>
+        
       </div>
     </header>
   );

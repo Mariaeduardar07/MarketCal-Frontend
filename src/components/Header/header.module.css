@@ -1,13 +1,13 @@
 .header {
     display: flex;
-    flex-direction: column; /* Organiza os itens verticalmente */
+    flex-direction: column; 
     justify-content: flex-start;
     align-items: center;
-    width: 250px; /* Define a largura da barra lateral */
-    height: 100vh; /* Faz o header ocupar toda a altura da tela */
-    background-color: #f4f4f4; /* Cor de fundo */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra */
-    position: fixed; /* Fixa o header na lateral */
+    width: 15rem; 
+    height: 100%; 
+    background-color: #f4f4f4; 
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
+    position: fixed;
     top: 0;
     left: 0;
     padding: 20px;
@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px; /* Espaçamento entre os itens */
+    gap: 20px; 
 }
 
 .logo {
@@ -25,7 +25,8 @@
 }
 
 .nav {
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .navList {
@@ -34,7 +35,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaçamento entre os links */
+    gap: 15px; 
 }
 
 .navItem {
@@ -52,9 +53,9 @@
 }
 
 .navLink:hover {
-    background-color: #ddd; /* Cor ao passar o mouse */
+    background-color: #ddd;
 }
 
 .navLink.active {
-    background-color: #ccc; /* Cor do link ativo */
+    background-color: #ccc; 
 }
