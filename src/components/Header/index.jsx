@@ -8,6 +8,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
+
       {/* Title */}
       <h1 className={styles.title}>Explorar Tarefas</h1>
 
@@ -21,6 +22,17 @@ export default function Header() {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             className={styles.searchInput}
+
+      <div className={styles.headerContent}>
+        <div className={styles.logo}>
+          <Image
+            src="/image/logo.png"
+            alt="Logo do MarketCal"
+            width={215}
+            height={215}
+            className={styles.logoImg}
+            priority
+
           />
           <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <circle cx="11" cy="11" r="8" />
