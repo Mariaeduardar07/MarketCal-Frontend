@@ -1,0 +1,31 @@
+.containerLogin {
+  display: flex;
+  min-height: 100vh;
+}
+
+.left {
+  flex: 1;
+  background-color: #84e7d289; /* cor da esquerda */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.intro {
+  text-align: center;
+  max-width: 720px;
+  width: 100%;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.text {
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.509);
+  margin: 0;
+}
