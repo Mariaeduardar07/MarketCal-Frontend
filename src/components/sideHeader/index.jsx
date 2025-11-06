@@ -12,8 +12,8 @@ export default function SideHeader() {
           <Image
             src="/image/logo.png"
             alt="Logo do MarketCal"
-            width={56}
-            height={56}
+            width={215}
+            height={215}
             className={styles.logoImg}
             priority
           />

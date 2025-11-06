@@ -7,7 +7,7 @@ export default function Header() {
   const [searchValue, setSearchValue] = useState('');
 
   return (
-    <header className={styles.header}>
+    <div className={styles.header}>
 
       {/* Title */}
       <h1 className={styles.title}>Explorar Tarefas</h1>
@@ -22,24 +22,11 @@ export default function Header() {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             className={styles.searchInput}
-
-      <div className={styles.headerContent}>
-        <div className={styles.logo}>
-          <Image
-            src="/image/logo.png"
-            alt="Logo do MarketCal"
-            width={215}
-            height={215}
-            className={styles.logoImg}
-            priority
-
           />
-          <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
+
         </div>
 
+      <div className={styles.headerContent}>
         {/* Category Button */}
         <button className={styles.filterButton}>
           <svg className={styles.icon} viewBox="0 0 24 24" fill="currentColor">
@@ -77,6 +64,7 @@ export default function Header() {
           </svg>
         </button>
       </div>
-    </header>
+    </div>
+  </div>
   );
 }
