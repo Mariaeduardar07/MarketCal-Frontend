@@ -1,144 +1,800 @@
-// Mock data que será substituído pela API futura
+export const mockInfluencers = {
+  recent: [
+    {
+      id: 1,
+      name: "Virginia Fonseca",
+      avatar: "/image/vir.png",
+      category: "Apresentadora & Lifestyle",
+      followers: "53,7mi",
+      engagement: "10.0%",
+      platform: "Instagram",
+      platforms: ["Instagram"],
+      verified: true,
+      location: "São Paulo, BR",
+      avgViews: "2.5M",
+      totalPosts: "8.542",
+      audience: {
+        women: 78,
+        men: 22,
+        ageGroups: [
+          { range: "18-24", percentage: 35 },
+          { range: "25-34", percentage: 42 },
+          { range: "35-44", percentage: 18 },
+          { range: "45+", percentage: 5 },
+        ],
+      },
+      interests: ["Moda", "Beleza", "Maternidade", "Lifestyle", "Família"],
+      contentTypes: {
+        photos: 45,
+        videos: 35,
+        reels: 15,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 25,
+        afternoon: 45,
+        night: 30,
+      },
+      pricing: {
+        post: "R$ 250.000",
+        story: "R$ 80.000",
+        video: "R$ 350.000",
+      },
+      contracts: [
+        {
+          brand: "SBT",
+          brandLogo: null,
+          type: "Contrato Fixo",
+          status: "Ativo",
+          duration: "12 meses",
+          startDate: "01/01/2025",
+          endDate: "01/01/2026",
+        },
+        {
+          brand: "WePink",
+          brandLogo: null,
+          type: "Embaixadora",
+          status: "Ativo",
+          deliverables: "4 posts + 8 stories",
+          deadline: "30/12/2025",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Vinicius Júnior",
+      avatar: "/image/vini.png",
+      category: "Futebol",
+      followers: "57,4mi",
+      engagement: "7.2%",
+      platform: "YouTube",
+      platforms: ["Instagram", "YouTube"],
+      verified: true,
+      location: "Madrid, ES",
+      avgViews: "3.2M",
+      totalPosts: "2.847",
+      audience: {
+        women: 32,
+        men: 68,
+        ageGroups: [
+          { range: "18-24", percentage: 48 },
+          { range: "25-34", percentage: 35 },
+          { range: "35-44", percentage: 12 },
+          { range: "45+", percentage: 5 },
+        ],
+      },
+      interests: ["Futebol", "Esportes", "Moda", "Lifestyle"],
+      contentTypes: {
+        photos: 40,
+        videos: 35,
+        reels: 20,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 20,
+        afternoon: 35,
+        night: 45,
+      },
+      pricing: {
+        post: "R$ 400.000",
+        story: "R$ 120.000",
+        video: "R$ 550.000",
+      },
+      contracts: [
+        {
+          brand: "Nike",
+          brandLogo: null,
+          type: "Embaixador Global",
+          status: "Ativo",
+          duration: "24 meses",
+          startDate: "01/06/2025",
+          endDate: "01/06/2027",
+        },
+        {
+          brand: "Real Madrid",
+          brandLogo: null,
+          type: "Campanha Internacional",
+          status: "Ativo",
+          deliverables: "6 posts + 12 stories",
+          deadline: "31/01/2026",
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "Bianca Andrade",
+      avatar: "/image/bianca.png",
+      category: "Beauty & Makeup",
+      followers: "28mi",
+      engagement: "9.1%",
+      platform: "Instagram",
+      platforms: ["Instagram", "TikTok"],
+      verified: true,
+      location: "Rio de Janeiro, BR",
+      avgViews: "1.8M",
+      totalPosts: "12.384",
+      audience: {
+        women: 92,
+        men: 8,
+        ageGroups: [
+          { range: "18-24", percentage: 45 },
+          { range: "25-34", percentage: 38 },
+          { range: "35-44", percentage: 12 },
+          { range: "45+", percentage: 5 },
+        ],
+      },
+      interests: [
+        "Beleza",
+        "Maquiagem",
+        "Skincare",
+        "Moda",
+        "Empreendedorismo",
+        "Lifestyle",
+      ],
+      contentTypes: {
+        photos: 35,
+        videos: 30,
+        reels: 25,
+        stories: 10,
+      },
+      peakTimes: {
+        morning: 30,
+        afternoon: 40,
+        night: 30,
+      },
+      pricing: {
+        post: "R$ 180.000",
+        story: "R$ 60.000",
+        video: "R$ 250.000",
+      },
+      contracts: [
+        {
+          brand: "Boca Rosa Beauty",
+          brandLogo: null,
+          type: "Marca Própria",
+          status: "Ativo",
+          duration: "Permanente",
+          startDate: "01/01/2020",
+          endDate: "-",
+        },
+        {
+          brand: "MAC Cosmetics",
+          brandLogo: null,
+          type: "Parceria",
+          status: "Ativo",
+          deliverables: "5 posts + 10 stories",
+          deadline: "15/12/2025",
+        },
+        {
+          brand: "Sephora",
+          brandLogo: null,
+          type: "Campanha",
+          status: "Ativo",
+          duration: "3 meses",
+          startDate: "01/11/2025",
+          endDate: "01/02/2026",
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: "Gusttavo Lima",
+      avatar: "/image/gusttavolima.png",
+      category: "Cantor & Compositor",
+      followers: "40mi",
+      engagement: "6.8%",
+      platform: "Youtube",
+      platforms: ["YouTube", "Instagram"],
+      verified: true,
+      location: "Goiânia, BR",
+      avgViews: "2.8M",
+      totalPosts: "4.521",
+      audience: {
+        women: 58,
+        men: 42,
+        ageGroups: [
+          { range: "18-24", percentage: 28 },
+          { range: "25-34", percentage: 38 },
+          { range: "35-44", percentage: 24 },
+          { range: "45+", percentage: 10 },
+        ],
+      },
+      interests: ["Música Sertaneja", "Shows", "Festas", "Lifestyle", "Moda"],
+      contentTypes: {
+        photos: 25,
+        videos: 50,
+        reels: 15,
+        stories: 10,
+      },
+      peakTimes: {
+        morning: 15,
+        afternoon: 30,
+        night: 55,
+      },
+      pricing: {
+        post: "R$ 320.000",
+        story: "R$ 95.000",
+        video: "R$ 450.000",
+      },
+      contracts: [
+        {
+          brand: "Ambev",
+          brandLogo: null,
+          type: "Embaixador",
+          status: "Ativo",
+          duration: "18 meses",
+          startDate: "01/03/2025",
+          endDate: "01/09/2026",
+        },
+        {
+          brand: "Balada App",
+          brandLogo: null,
+          type: "Contrato Fixo",
+          status: "Ativo",
+          duration: "12 meses",
+          startDate: "01/07/2025",
+          endDate: "01/07/2026",
+        },
+      ],
+    },
+  ],
+  all: [
+    {
+      id: 5,
+      name: "Mel Maia",
+      avatar: "/image/melmaia.png",
+      category: "Atriz",
+      followers: "10mi",
+      engagement: "9.2%",
+      platform: "Instagram",
+      platforms: ["Instagram"],
+      verified: true,
+      location: "Rio de Janeiro, BR",
+      avgViews: "850K",
+      totalPosts: "3.142",
+      audience: {
+        women: 72,
+        men: 28,
+        ageGroups: [
+          { range: "18-24", percentage: 52 },
+          { range: "25-34", percentage: 32 },
+          { range: "35-44", percentage: 12 },
+          { range: "45+", percentage: 4 },
+        ],
+      },
+      interests: [
+        "Moda",
+        "Beleza",
+        "Atuação",
+        "Lifestyle",
+        "Viagens",
+        "Fotografia",
+      ],
+      contentTypes: {
+        photos: 50,
+        videos: 25,
+        reels: 20,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 25,
+        afternoon: 45,
+        night: 30,
+      },
+      pricing: {
+        post: "R$ 85.000",
+        story: "R$ 28.000",
+        video: "R$ 120.000",
+      },
+      contracts: [
+        {
+          brand: "Globo",
+          brandLogo: null,
+          type: "Novelas & Séries",
+          status: "Ativo",
+          duration: "6 meses",
+          startDate: "01/10/2025",
+          endDate: "01/04/2026",
+        },
+        {
+          brand: "Netflix Brasil",
+          brandLogo: null,
+          type: "Divulgação de Série",
+          status: "Ativo",
+          deliverables: "3 posts + 6 stories",
+          deadline: "20/12/2025",
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "Brino",
+      avatar: "/image/brino.png",
+      category: "Humor",
+      followers: "9mi",
+      engagement: "9.9%",
+      platform: "YouTube",
+      platforms: ["YouTube", "TikTok"],
+      verified: true,
+      location: "São Paulo, BR",
+      avgViews: "1.2M",
+      totalPosts: "6.847",
+      audience: {
+        women: 45,
+        men: 55,
+        ageGroups: [
+          { range: "18-24", percentage: 58 },
+          { range: "25-34", percentage: 30 },
+          { range: "35-44", percentage: 10 },
+          { range: "45+", percentage: 2 },
+        ],
+      },
+      interests: [
+        "Humor",
+        "Entretenimento",
+        "Games",
+        "Música",
+        "Memes",
+        "Cultura Pop",
+      ],
+      contentTypes: {
+        photos: 20,
+        videos: 45,
+        reels: 30,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 20,
+        afternoon: 35,
+        night: 45,
+      },
+      pricing: {
+        post: "R$ 65.000",
+        story: "R$ 22.000",
+        video: "R$ 95.000",
+      },
+      contracts: [
+        {
+          brand: "Nubank",
+          brandLogo: null,
+          type: "Campanha Digital",
+          status: "Ativo",
+          deliverables: "4 vídeos + 8 stories",
+          deadline: "31/12/2025",
+        },
+        {
+          brand: "Samsung",
+          brandLogo: null,
+          type: "Lançamento de Produto",
+          status: "Ativo",
+          duration: "2 meses",
+          startDate: "01/11/2025",
+          endDate: "01/01/2026",
+        },
+      ],
+    },
+    {
+      id: 7,
+      name: "Tata Estaniecki",
+      avatar: "/image/tata.png",
+      category: "Influencer",
+      followers: "22,5mi",
+      engagement: "9.5%",
+      platform: "Instagram",
+      platforms: ["Instagram", "YouTube"],
+      verified: true,
+      location: "São Paulo, BR",
+      avgViews: "1.5M",
+      totalPosts: "8.921",
+      audience: {
+        women: 82,
+        men: 18,
+        ageGroups: [
+          { range: "18-24", percentage: 48 },
+          { range: "25-34", percentage: 35 },
+          { range: "35-44", percentage: 13 },
+          { range: "45+", percentage: 4 },
+        ],
+      },
+      interests: [
+        "Lifestyle",
+        "Moda",
+        "Viagens",
+        "Beleza",
+        "Fotografia",
+        "PodCast",
+      ],
+      contentTypes: {
+        photos: 45,
+        videos: 30,
+        reels: 20,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 28,
+        afternoon: 42,
+        night: 30,
+      },
+      pricing: {
+        post: "R$ 150.000",
+        story: "R$ 50.000",
+        video: "R$ 220.000",
+      },
+      contracts: [
+        {
+          brand: "Arezzo",
+          brandLogo: null,
+          type: "Campanha Primavera",
+          status: "Ativo",
+          duration: "12 meses",
+          deliverables: "4 vídeos + 8 stories",
+          deadline: "31/12/2025",
+        },
+        {
+          brand: "PodDelas",
+          brandLogo: null,
+          type: "Embaixadora",
+          status: "Ativo",
+          startDate: "01/12/2024",
+        },
+        {
+          brand: "Havaianas",
+          brandLogo: null,
+          type: "Coleção Verão",
+          status: "Ativo",
+          duration: "4 meses",
+          startDate: "01/12/2025",
+          endDate: "01/04/2026",
+        },
+      ],
+    },
+    {
+      id: 8,
+      name: "Júlio Cocielo",
+      avatar: "/image/julio.jpeg",
+      category: "Fitness & Humor",
+      followers: "20mi",
+      engagement: "7.6%",
+      platform: "Instagram",
+      platforms: ["Instagram"],
+      verified: true,
+      location: "São Paulo, BR",
+      avgViews: "1.3M",
+      totalPosts: "5.234",
+      audience: {
+        women: 42,
+        men: 58,
+        ageGroups: [
+          { range: "18-24", percentage: 45 },
+          { range: "25-34", percentage: 38 },
+          { range: "35-44", percentage: 14 },
+          { range: "45+", percentage: 3 },
+        ],
+      },
+      interests: [
+        "Humor",
+        "Fitness",
+        "Lifestyle",
+        "Entretenimento",
+        "Podcast",
+        "Esportes",
+      ],
+      contentTypes: {
+        photos: 30,
+        videos: 40,
+        reels: 25,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 22,
+        afternoon: 38,
+        night: 40,
+      },
+      pricing: {
+        post: "R$ 135.000",
+        story: "R$ 45.000",
+        video: "R$ 195.000",
+      },
+      contracts: [
+        {
+          brand: "Adidas",
+          brandLogo: null,
+          type: "Linha Athleisure",
+          status: "Ativo",
+          duration: "8 meses",
+          startDate: "01/09/2025",
+          endDate: "01/05/2026",
+        },
+      ],
+    },
+    {
+      id: 9,
+      name: "Juliette Freire",
+      avatar: "/image/juliette.png",
+      category: "Influencer",
+      followers: "30mi",
+      engagement: "8.3%",
+      platform: "Instagram",
+      platforms: ["Instagram"],
+      verified: true,
+      location: "Campina Grande, BR",
+      avgViews: "1.9M",
+      totalPosts: "4.876",
+      audience: {
+        women: 75,
+        men: 25,
+        ageGroups: [
+          { range: "18-24", percentage: 40 },
+          { range: "25-34", percentage: 38 },
+          { range: "35-44", percentage: 17 },
+          { range: "45+", percentage: 5 },
+        ],
+      },
+      interests: [
+        "Música",
+        "Beleza",
+        "Moda",
+        "Maquiagem",
+        "Lifestyle",
+        "Empoderamento",
+      ],
+      contentTypes: {
+        photos: 40,
+        videos: 35,
+        reels: 20,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 25,
+        afternoon: 40,
+        night: 35,
+      },
+      pricing: {
+        post: "R$ 200.000",
+        story: "R$ 70.000",
+        video: "R$ 290.000",
+      },
+      contracts: [
+        {
+          brand: "Avon",
+          brandLogo: null,
+          type: "Embaixadora Nacional",
+          status: "Ativo",
+          duration: "18 meses",
+          startDate: "01/04/2025",
+          endDate: "01/10/2026",
+        },
+        {
+          brand: "Globoplay",
+          brandLogo: null,
+          type: "Programa Reality",
+          status: "Ativo",
+          deliverables: "Participação + 5 posts",
+          deadline: "15/01/2026",
+        },
+      ],
+    },
+    {
+      id: 10,
+      name: "Larissa Manoela",
+      avatar: "/image/larissa.png",
+      category: "Atriz",
+      followers: "39,9mi",
+      engagement: "9.8%",
+      platform: "Instagram",
+      platforms: ["Instagram"],
+      verified: true,
+      location: "São Paulo, BR",
+      avgViews: "2.3M",
+      totalPosts: "7.432",
+      audience: {
+        women: 80,
+        men: 20,
+        ageGroups: [
+          { range: "18-24", percentage: 55 },
+          { range: "25-34", percentage: 30 },
+          { range: "35-44", percentage: 12 },
+          { range: "45+", percentage: 3 },
+        ],
+      },
+      interests: [
+        "Atuação",
+        "Moda",
+        "Beleza",
+        "Lifestyle",
+        "Viagens",
+        "Música",
+      ],
+      contentTypes: {
+        photos: 45,
+        videos: 30,
+        reels: 20,
+        stories: 5,
+      },
+      peakTimes: {
+        morning: 30,
+        afternoon: 40,
+        night: 30,
+      },
+      pricing: {
+        post: "R$ 220.000",
+        story: "R$ 75.000",
+        video: "R$ 310.000",
+      },
+      contracts: [
+        {
+          brand: "Globo",
+          brandLogo: null,
+          type: "Novela Principal",
+          status: "Ativo",
+          duration: "12 meses",
+          startDate: "01/08/2025",
+          endDate: "01/08/2026",
+        },
+        {
+          brand: "Fenty Beauty",
+          brandLogo: null,
+          type: "Campanha Internacional",
+          status: "Ativo",
+          deliverables: "6 posts + 12 stories",
+          deadline: "31/01/2026",
+        },
+      ],
+    },
+  ],
+};
+
 export const mockInfluencerTasks = {
   instagram: [
     {
       id: 1,
-      image: '/image/logo.png', // usando a imagem disponível
-      title: 'Creating Awesome Mobile Apps',
-      category: 'UI/UX Design',
+      image: "/image/logo.png",
+      title: "Creating Awesome Mobile Apps",
+      category: "UI/UX Design",
       progress: 100,
-      timeLeft: '1 Hour',
+      timeLeft: "1 Hour",
       daysLeft: null,
       teamMembers: [
-        '/image/logo.png', // placeholder - futuramente virão da API
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+      ],
     },
     {
       id: 2,
-      image: '/image/logo.png',
-      title: 'Creating Fresh Website',
-      category: 'Web Developer',
+      image: "/image/logo.png",
+      title: "Creating Fresh Website",
+      category: "Web Developer",
       progress: 65,
-      timeLeft: '2 Hour',
+      timeLeft: "2 Hour",
       daysLeft: null,
       teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+      ],
     },
     {
       id: 3,
-      image: '/image/logo.png',
-      title: 'Creating Color Palettes',
-      category: 'UI/UX Design',
+      image: "/image/logo.png",
+      title: "Creating Color Palettes",
+      category: "UI/UX Design",
       progress: 100,
-      timeLeft: '1 Hour',
+      timeLeft: "1 Hour",
       daysLeft: null,
-      teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
+      teamMembers: ["/image/logo.png", "/image/logo.png", "/image/logo.png"],
     },
     {
       id: 4,
-      image: '/image/logo.png',
-      title: 'Awesome Project',
-      category: 'Web Development',
+      image: "/image/logo.png",
+      title: "Awesome Project",
+      category: "Web Development",
       progress: 78,
-      timeLeft: '3 Hour',
+      timeLeft: "3 Hour",
       daysLeft: null,
-      teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
-    }
+      teamMembers: ["/image/logo.png", "/image/logo.png"],
+    },
   ],
   twitter: [
     {
       id: 5,
-      image: '/image/logo.png',
-      title: 'Creating Mobile App Design',
-      category: 'UI/UX Design',
+      image: "/image/logo.png",
+      title: "Creating Mobile App Design",
+      category: "UI/UX Design",
       progress: 78,
       timeLeft: null,
-      daysLeft: '3 Days Left',
+      daysLeft: "3 Days Left",
       teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+      ],
     },
     {
       id: 6,
-      image: '/image/logo.png',
-      title: 'Creating Perfect Website',
-      category: 'Web Developer',
+      image: "/image/logo.png",
+      title: "Creating Perfect Website",
+      category: "Web Developer",
       progress: 95,
       timeLeft: null,
-      daysLeft: '4 Days Left',
+      daysLeft: "4 Days Left",
       teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+        "/image/logo.png",
+      ],
     },
     {
       id: 7,
-      image: '/image/logo.png',
-      title: 'Mobile App Design',
-      category: 'UI/UX Design',
+      image: "/image/logo.png",
+      title: "Mobile App Design",
+      category: "UI/UX Design",
       progress: 67,
       timeLeft: null,
-      daysLeft: '3 Days Left',
-      teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
+      daysLeft: "3 Days Left",
+      teamMembers: ["/image/logo.png", "/image/logo.png", "/image/logo.png"],
     },
     {
       id: 8,
-      image: '/image/logo.png',
-      title: 'Creating Brand Identity',
-      category: 'Brand Designer',
+      image: "/image/logo.png",
+      title: "Creating Brand Identity",
+      category: "Brand Designer",
       progress: 84,
       timeLeft: null,
-      daysLeft: '1 Day Left',
-      teamMembers: [
-        '/image/logo.png',
-        '/image/logo.png'
-      ]
-    }
-  ]
+      daysLeft: "1 Day Left",
+      teamMembers: ["/image/logo.png", "/image/logo.png"],
+    },
+  ],
 };
 
-// Função para simular chamada da API futura
 export const fetchInfluencerTasks = async (platform = null) => {
-  // Simula delay da API
-  await new Promise(resolve => setTimeout(resolve, 100));
-  
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
   if (platform) {
     return mockInfluencerTasks[platform] || [];
   }
-  
+
   return mockInfluencerTasks;
 };
 
-// Função para atualizar progresso (futura integração com API)
+export const fetchInfluencers = async (filter = "all") => {
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  if (filter === "recent") {
+    return mockInfluencers.recent;
+  }
+
+  return [...mockInfluencers.recent, ...mockInfluencers.all];
+};
+
 export const updateTaskProgress = async (taskId, newProgress) => {
-  // Simula chamada da API
-  await new Promise(resolve => setTimeout(resolve, 200));
-  
-  // Aqui será a chamada real da API futuramente
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
   console.log(`Updating task ${taskId} progress to ${newProgress}%`);
-  
+
   return { success: true, taskId, newProgress };
 };

@@ -33,7 +33,7 @@ export default function SideHeader() {
               </Link>
             </li>
             <li className={styles.navItem}>
-            <Link href="/" className={styles.navLink}>
+            <Link href="/pageExplore" className={styles.navLink}>
                 Influencers
               </Link>
             </li>

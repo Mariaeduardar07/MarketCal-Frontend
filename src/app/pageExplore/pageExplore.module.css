@@ -1,0 +1,172 @@
+.pageWrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 260px;
+}
+
+.pageContainer {
+  flex: 1;
+  background: #f8fafc;
+  padding: 32px 24px;
+  overflow-y: auto;
+}
+
+.contentWrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pageHeader {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pageSubtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+  font-weight: 400;
+}
+
+.section {
+  margin-bottom: 48px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.badge {
+  background: linear-gradient(135deg, #5cb3a0 0%, #2d6962 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cardsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  animation: fadeIn 0.6s ease;
+}
+
+/* Remove as scrollbars */
+.cardsGrid::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .cardsGrid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .pageContainer {
+    padding: 24px 16px;
+  }
+
+  .pageHeader {
+    margin-bottom: 32px;
+  }
+
+  .pageTitle {
+    font-size: 32px;
+  }
+
+  .pageSubtitle {
+    font-size: 16px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .cardsGrid {
+    gap: 14px;
+  }
+
+  .section {
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 28px;
+  }
+  
+  .cardsGrid {
+    gap: 12px;
+  }
+}
+
+/* Animações suaves para os cards */
+.cardsGrid > * {
+  animation: slideUp 0.4s ease forwards;
+  opacity: 0;
+}
+
+.cardsGrid > *:nth-child(1) { animation-delay: 0.1s; }
+.cardsGrid > *:nth-child(2) { animation-delay: 0.2s; }
+.cardsGrid > *:nth-child(3) { animation-delay: 0.3s; }
+.cardsGrid > *:nth-child(4) { animation-delay: 0.4s; }
+.cardsGrid > *:nth-child(5) { animation-delay: 0.5s; }
+.cardsGrid > *:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}

@@ -9,9 +9,6 @@ export default function Header() {
   return (
     <div className={styles.header}>
 
-      {/* Title */}
-      <h1 className={styles.title}>Explorar Tarefas</h1>
-
       {/* Right Section */}
       <div className={styles.rightSection}>
         {/* Search Box */}

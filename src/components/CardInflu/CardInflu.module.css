@@ -1,0 +1,225 @@
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid #f0f0f0;
+  min-width: 340px;
+  max-width: 380px;
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.platformIconCorner {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.card:hover .platformIconCorner {
+  opacity: 1;
+}
+
+.platformIcon {
+  width: 20px;
+  height: 20px;
+  color: #00D4AA;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.platformIcon:hover {
+  opacity: 0.8;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #84e7d2;
+  background: #f0f0f0;
+}
+
+.verifiedBadge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: #5cb3a0;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.influencerName {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.category {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statsContainer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.statValue {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d6962;
+}
+
+.statDivider {
+  width: 1px;
+  height: 38px;
+  background: #e0e0e0;
+}
+
+.platformBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #00D4AA 0%, #00E4B8 100%);
+  border-radius: 14px;
+  align-self: flex-start;
+}
+
+.platformIcon {
+  font-size: 12px;
+}
+
+.platformText {
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+}
+
+.cardFooter {
+  display: none;
+}
+
+.btnPrimary,
+.btnSecondary {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #5cb3a0 0%, #2d6962 100%);
+  color: white;
+}
+
+.btnPrimary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(92, 179, 160, 0.4);
+}
+
+.btnSecondary {
+  background: #f8fafc;
+  color: #5cb3a0;
+  border: 1px solid #84e7d2;
+}
+
+.btnSecondary:hover {
+  background: #84e7d2;
+  border-color: #5cb3a0;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card {
+    min-width: 280px;
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .statsContainer {
+    padding: 10px;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
