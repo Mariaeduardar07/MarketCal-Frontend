@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import styles from "./login.module.css";
+import styles from "./register.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,22 +13,27 @@ const validateEmail = (email) => {
   return regex.test(email);
 };
 
-export default function Login() {
+export default function Register() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
     setLoading(true);
 
-    if (!form.email || !form.password) {
+    if (!form.name || !form.email || !form.password || !form.confirmPassword) {
       setError("Por favor, preencha todos os campos.");
       setLoading(false);
       return;
@@ -40,10 +45,23 @@ export default function Login() {
       return;
     }
 
+    if (form.password !== form.confirmPassword) {
+      setError("As senhas não coincidem.");
+      setLoading(false);
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setError("A senha deve ter no mínimo 6 caracteres.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(
-        "https://marketcal-back-end.onrender.com/",
+        "https://marketcal-back-end.onrender.com/register",
         {
+          name: form.name,
           email: form.email,
           password: form.password,
         },
@@ -52,32 +70,25 @@ export default function Login() {
         }
       );
 
-      const { token, userExists } = response.data;
+      const { token, user } = response.data;
 
-      if (!token || !userExists) {
+      if (!token) {
         throw new Error("Erro: resposta da API incompleta.");
       }
 
       // Salvar token e usuário no localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(userExists));
+      localStorage.setItem("user", JSON.stringify(user));
 
-      // Lembrar-me
-      if (rememberMe) {
-        localStorage.setItem("rememberEmail", form.email);
-      } else {
-        localStorage.removeItem("rememberEmail");
-      }
-
-      setSuccess("Login realizado com sucesso! Redirecionando...");
-      setTimeout(() => router.push("/pageExplore"), 1500);
+      setSuccess("Conta criada com sucesso! Redirecionando...");
+      setTimeout(() => router.push("/"), 1500);
     } catch (err) {
       if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else if (err.code === "ERR_NETWORK") {
         setError("Erro de conexão. Verifique se o servidor está rodando.");
       } else {
-        setError("E-mail ou senha incorretos. Tente novamente.");
+        setError("Erro ao fazer cadastro. Tente novamente.");
       }
     } finally {
       setLoading(false);
@@ -85,18 +96,8 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.containerLogin}>
+    <div className={styles.containerRegister}>
       {/* ESQUERDA */}
-      <div className={styles.left}>
-        <div className={styles.intro}>
-          <h1 className={styles.title}>Bem vindo(a) ao MarketCal</h1>
-          <p className={styles.text}>
-            Sua estratégia de social media, organizada para performar
-          </p>
-        </div>
-      </div>
-
-      {/* DIREITA */}
       <div className={styles.right}>
         <Image
           src="/image/logo.png"
@@ -106,7 +107,22 @@ export default function Login() {
           className={styles.logoImg}
           priority
         />
-        <form className={styles.form} onSubmit={handleLogin}>
+        <form className={styles.form} onSubmit={handleRegister}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name" className={styles.label}>
+              Nome Completo
+            </label>
+            <input
+              type="text"
+              id="name"
+              className={styles.input}
+              placeholder="Seu nome completo"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              disabled={loading}
+            />
+          </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.label}>
               E-mail
@@ -131,7 +147,7 @@ export default function Login() {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 className={styles.input}
-                placeholder="Digite sua senha"
+                placeholder="Digite sua senha (mín. 6 caracteres)"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 disabled={loading}
@@ -147,19 +163,34 @@ export default function Login() {
             </div>
           </div>
 
-          <div className={styles.rememberForgot}>
-            <label className={styles.rememberLabel}>
+          <div className={styles.formGroup}>
+            <label htmlFor="confirmPassword" className={styles.label}>
+              Confirmar Senha
+            </label>
+            <div className={styles.passwordWrapper}>
               <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                className={styles.input}
+                placeholder="Confirme sua senha"
+                value={form.confirmPassword}
+                onChange={(e) =>
+                  setForm({ ...form, confirmPassword: e.target.value })
+                }
                 disabled={loading}
               />
-              Lembrar-me
-            </label>
-            <Link href="/forgot-password" className={styles.forgotLink}>
-              Esqueci minha senha
-            </Link>
+              <button
+                type="button"
+                className={styles.togglePassword}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                disabled={loading}
+              >
+                {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+              </button>
+            </div>
+            {form.confirmPassword && form.password !== form.confirmPassword && (
+              <p className={styles.warningMessage}>As senhas não coincidem</p>
+            )}
           </div>
 
           {error && <p className={styles.errorMessage}>{error}</p>}
@@ -168,20 +199,30 @@ export default function Login() {
           <button type="submit" className={styles.button} disabled={loading}>
             {loading ? (
               <>
-                <span className={styles.spinner}></span> Entrando...
+                <span className={styles.spinner}></span> Criando conta...
               </>
             ) : (
-              "Entrar"
+              "Criar Conta"
             )}
           </button>
 
           <p style={{ marginTop: "15px", textAlign: "center" }}>
-            Não tem conta?{" "}
-            <Link href="/cadastro" style={{ color: "#007bff", fontWeight: "bold" }}>
-              Faça cadastro
+            Já tem conta?{" "}
+            <Link href="/login" style={{ color: "#007bff", fontWeight: "bold" }}>
+              Faça login
             </Link>
           </p>
         </form>
+      </div>
+
+      {/* DIREITA */}
+      <div className={styles.left}>
+        <div className={styles.intro}>
+          <h1 className={styles.title}>Crie sua conta</h1>
+          <p className={styles.text}>
+            Junte-se ao MarketCal e organize sua estratégia de social media
+          </p>
+        </div>
       </div>
     </div>
   );
