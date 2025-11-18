@@ -8,7 +8,7 @@ import { fetchInfluencerTasks } from '../../data/mockData';
 import styles from './pageTask.module.css';
 
 const PageTask = () => {
-  const [tasks, setTasks] = useState({ instagram: [], twitter: [] });
+  const [tasks, setTasks] = useState({ instagram: [], twitter: [], linkedin: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -124,6 +124,43 @@ const PageTask = () => {
                 daysLeft={task.daysLeft}
                 teamMembers={task.teamMembers}
                 platform="twitter"
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Seção LinkedIn */}
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>LinkedIn</h2>
+            <div className={styles.sectionNavigation}>
+              <button 
+                className={styles.navButton}
+                onClick={() => scrollCards('left', 'linkedin')}
+              >
+                <span>❮</span>
+              </button>
+              <button 
+                className={styles.navButton}
+                onClick={() => scrollCards('right', 'linkedin')}
+              >
+                <span>❯</span>
+              </button>
+            </div>
+          </div>
+          
+          <div className={styles.cardsGrid} id="cards-linkedin">
+            {tasks.linkedin.map((task) => (
+              <ProgressCard
+                key={task.id}
+                image={task.image}
+                title={task.title}
+                category={task.category}
+                progress={task.progress}
+                timeLeft={task.timeLeft}
+                daysLeft={task.daysLeft}
+                teamMembers={task.teamMembers}
+                platform="linkedin"
               />
             ))}
           </div>
