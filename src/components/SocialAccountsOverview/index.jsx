@@ -159,7 +159,7 @@ export default function SocialAccountsOverview({ accounts = [] }) {
               <div className={styles.profileInfo}>
                 <h4 className={styles.profileName}>{account.name || "Conta"}</h4>
                 <p className={styles.profileHandle}>
-                  @{account.handle || account.name?.toLowerCase().replace(/\s/g, '') || "usuario"}
+                  {account.handle || account.name?.toLowerCase().replace(/\s/g, '') || "usuario"}
                 </p>
               </div>
 

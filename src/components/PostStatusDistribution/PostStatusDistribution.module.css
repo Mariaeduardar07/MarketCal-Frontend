@@ -1,122 +1,267 @@
-/* ===== POST STATUS - MINIMAL VERTICAL BARS ===== */
+/* ===== POST STATUS - HORIZONTAL BARS (SOFT UI) ===== */
 
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  padding: 4px 0;
 }
 
 /* ===== HEADER ===== */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .title {
-  font-size: 0.95rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: #2d3748;
   margin: 0;
 }
 
-.total {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #ffffff;
-  background: #5dd4c0;
-  padding: 4px 10px;
-  border-radius: 20px;
+.subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
 }
 
-/* ===== CHART ===== */
-.chartContainer {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-  flex: 1;
-  gap: 16px;
-  padding-top: 8px;
-}
-
-/* ===== BAR COLUMN ===== */
-.barColumn {
+/* ===== BARS CONTAINER ===== */
+.barsContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  gap: 28px;
   flex: 1;
-  animation: fadeIn 0.4s ease forwards;
+  justify-content: center;
+}
+
+/* ===== BAR ROW ===== */
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   opacity: 0;
 }
 
-@keyframes fadeIn {
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
   to {
     opacity: 1;
+    transform: translateX(0);
   }
 }
 
-/* ===== BAR ===== */
-.barTrack {
-  width: 32px;
-  height: 100px;
-  background: #f3f4f6;
-  border-radius: 8px;
-  overflow: hidden;
+/* ===== BAR INFO (Label + Count) ===== */
+.barInfo {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 110px;
 }
 
-.barFill {
-  width: 100%;
-  border-radius: 8px;
-  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 4px;
-}
-
-/* ===== VALUE & LABEL ===== */
-.value {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.label {
-  font-size: 0.7rem;
+.barLabel {
+  font-size: 0.875rem;
   font-weight: 500;
+  color: #4a5568;
+  line-height: 1.2;
+}
+
+.barCount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ===== BAR TRACK ===== */
+.barTrack {
+  flex: 1;
+  height: 20px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== BAR FILL ===== */
+.barFill {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 20px;
+  box-shadow: 0 2px 8px rgba(93, 212, 192, 0.2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+}
+
+.barFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* ===== PERCENTUAL ===== */
+.barPercentage {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.percentageOutside {
+  min-width: 50px;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+/* ===== LEGENDA ===== */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legendText {
+  font-size: 0.813rem;
   color: #6b7280;
-  text-align: center;
+  font-weight: 500;
 }
 
-/* ===== HOVER ===== */
-.barColumn:hover .barFill {
+/* ===== HOVER EFFECTS ===== */
+.barRow:hover .barFill {
   filter: brightness(1.1);
+  box-shadow: 0 4px 16px rgba(93, 212, 192, 0.35);
+  transform: scaleY(1.15);
 }
 
-.barColumn:hover .value {
-  color: #47c4ac;
+.barRow:hover .barLabel {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.barRow:hover .barCount {
+  transform: scale(1.08);
+}
+
+.barRow:hover .barTrack {
+  background: #e2e8f0;
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 500px) {
-  .barTrack {
-    width: 28px;
-    height: 80px;
+@media (max-width: 768px) {
+  .container {
+    gap: 18px;
   }
 
-  .value {
+  .barsContainer {
+    gap: 24px;
+  }
+
+  .barInfo {
+    min-width: 90px;
+  }
+
+  .barLabel {
+    font-size: 0.813rem;
+  }
+
+  .barCount {
+    font-size: 1.25rem;
+  }
+
+  .barTrack {
+    height: 18px;
+  }
+
+  .barRow {
+    gap: 12px;
+  }
+
+  .legend {
+    gap: 16px;
+  }
+
+  .legendText {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
     font-size: 1rem;
   }
 
-  .label {
-    font-size: 0.65rem;
+  .subtitle {
+    font-size: 0.813rem;
+  }
+
+  .barsContainer {
+    gap: 22px;
+  }
+
+  .barInfo {
+    min-width: 80px;
+  }
+
+  .barLabel {
+    font-size: 0.75rem;
+  }
+
+  .barCount {
+    font-size: 1.125rem;
+  }
+
+  .barTrack {
+    height: 16px;
+  }
+
+  .barRow {
+    gap: 10px;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
