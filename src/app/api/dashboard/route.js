@@ -1,6 +1,8 @@
 export async function GET(request) {
   try {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4001";
+  // Ajuste: usar por padrão a mesma porta do auth usada no frontend (4000).
+  // Se sua API estiver em outra porta, defina NEXT_PUBLIC_API_URL no .env.local
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
     
     // Pegar token do header Authorization
     const authHeader = request.headers.get("authorization");
@@ -19,37 +21,55 @@ export async function GET(request) {
     };
 
     // Buscar posts
-    const postsResponse = await fetch(`${API_URL}/posts`, {
-      method: "GET",
-      headers,
-    });
+    let posts;
+    try {
+      const postsResponse = await fetch(`${API_URL}/posts`, {
+        method: "GET",
+        headers,
+      });
 
-    if (postsResponse.status === 401) {
+      if (postsResponse.status === 401) {
+        return Response.json(
+          { error: "Token inválido ou expirado" },
+          { status: 401 }
+        );
+      }
+
+      if (!postsResponse.ok) {
+        throw new Error(`Erro ao buscar posts: HTTP ${postsResponse.status}`);
+      }
+
+      posts = await postsResponse.json();
+    } catch (err) {
+      console.error("Falha ao buscar posts do backend:", err);
       return Response.json(
-        { error: "Token inválido ou expirado" },
-        { status: 401 }
+        { error: `Falha ao conectar com o backend em ${API_URL}/posts: ${err.message}` },
+        { status: 502 }
       );
     }
-
-    if (!postsResponse.ok) {
-      throw new Error(`Erro ao buscar posts: ${postsResponse.status}`);
-    }
-
-    const posts = await postsResponse.json();
 
     // Buscar contas sociais
-    const accountsResponse = await fetch(`${API_URL}/social-accounts`, {
-      method: "GET",
-      headers,
-    });
+    let accounts;
+    try {
+      const accountsResponse = await fetch(`${API_URL}/social-accounts`, {
+        method: "GET",
+        headers,
+      });
 
-    if (!accountsResponse.ok) {
-      throw new Error(
-        `Erro ao buscar contas sociais: ${accountsResponse.status}`
+      if (!accountsResponse.ok) {
+        throw new Error(
+          `Erro ao buscar contas sociais: HTTP ${accountsResponse.status}`
+        );
+      }
+
+      accounts = await accountsResponse.json();
+    } catch (err) {
+      console.error("Falha ao buscar contas sociais do backend:", err);
+      return Response.json(
+        { error: `Falha ao conectar com o backend em ${API_URL}/social-accounts: ${err.message}` },
+        { status: 502 }
       );
     }
-
-    const accounts = await accountsResponse.json();
 
     // Processar estatísticas
     const stats = {

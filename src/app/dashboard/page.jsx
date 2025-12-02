@@ -19,7 +19,20 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch("/api/dashboard");
+        // Pegar token do localStorage e enviar no header para a rota interna
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+        if (!token) {
+          // Se não há token armazenado, redirecionar para login
+          router.push("/Login");
+          return;
+        }
+
+        const response = await fetch("/api/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         
         if (response.status === 401) {
           router.push("/Login");
@@ -58,7 +71,7 @@ export default function Dashboard() {
             {/* Header Section */}
             <section className={styles.headerSection}>
               <div>
-                <h1 className={styles.pageTitle}>📊 Dashboard de Postagens</h1>
+                <h1 className={styles.pageTitle}>Dashboard</h1>
                 <p className={styles.pageSubtitle}>Acompanhe o desempenho das suas contas sociais em tempo real</p>
               </div>
             </section>
@@ -74,7 +87,7 @@ export default function Dashboard() {
             {/* Error State */}
             {error && !loading && (
               <div className={styles.errorContainer}>
-                <h2>⚠️ Erro ao carregar dashboard</h2>
+                <h2>Erro ao carregar dashboard</h2>
                 <p>{error}</p>
                 <button onClick={() => window.location.reload()} className={styles.retryButton}>
                   Tentar novamente
