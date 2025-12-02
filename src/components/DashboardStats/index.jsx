@@ -1,53 +1,68 @@
 "use client";
+import { FileText, Users, Clock, CheckCircle } from "lucide-react";
 import styles from "./DashboardStats.module.css";
-import dashboardStyles from "@/app/dashboard/dashboard.module.css";
 
-export default function DashboardStats({ stats, variant = "default" }) {
+export default function DashboardStats({ stats = {}, variant = "default" }) {
+  const defaultStats = {
+    totalPosts: 0,
+    activeAccounts: 0,
+    scheduledPosts: 0,
+    publishedPosts: 0,
+  };
+
+  const currentStats = { ...defaultStats, ...stats };
+
   const statsData = [
     {
-      icon: "📊",
-      value: stats?.totalPosts ?? 0,
+      icon: <FileText size={20} strokeWidth={2.5} />,
+      value: currentStats.totalPosts,
       label: "Total",
+      color: "#fff",
     },
     {
-      icon: "🔗",
-      value: stats?.totalAccounts ?? 0,
+      icon: <Users size={20} strokeWidth={2.5} />,
+      value: currentStats.activeAccounts,
       label: "Contas",
+      color: "#fff",
     },
     {
-      icon: "📅",
-      value: stats?.scheduledPosts ?? 0,
+      icon: <Clock size={20} strokeWidth={2.5} />,
+      value: currentStats.scheduledPosts,
       label: "Agendadas",
+      color: "#fff",
     },
     {
-      icon: "✅",
-      value: stats?.publishedPosts ?? 0,
+      icon: <CheckCircle size={20} strokeWidth={2.5} />,
+      value: currentStats.publishedPosts,
       label: "Publicadas",
+      color: "#fff",
     },
   ];
 
-  // Variante Overview - Mini cards dentro do card principal
   if (variant === "overview") {
     return (
       <>
         {statsData.map((stat, index) => (
-          <div key={index} className={dashboardStyles.miniStatCard}>
-            <div className={dashboardStyles.miniStatIcon}>{stat.icon}</div>
-            <p className={dashboardStyles.miniStatValue}>{stat.value}</p>
-            <p className={dashboardStyles.miniStatLabel}>{stat.label}</p>
+          <div key={index} className={styles.miniStatCard}>
+            <div className={styles.miniStatIcon} style={{ color: stat.color }}>
+              {stat.icon}
+            </div>
+            <p className={styles.miniStatValue}>{stat.value}</p>
+            <p className={styles.miniStatLabel}>{stat.label}</p>
           </div>
         ))}
       </>
     );
   }
 
-  // Variante padrão
   return (
-    <div className={styles.statsContainer}>
+    <div className={styles.statsGrid}>
       {statsData.map((stat, index) => (
         <div key={index} className={styles.statCard}>
-          <div className={styles.statIcon}>{stat.icon}</div>
-          <div className={styles.statInfo}>
+          <div className={styles.statIcon} style={{ backgroundColor: `${stat.color}15` }}>
+            <div style={{ color: stat.color }}>{stat.icon}</div>
+          </div>
+          <div className={styles.statContent}>
             <p className={styles.statValue}>{stat.value}</p>
             <p className={styles.statLabel}>{stat.label}</p>
           </div>

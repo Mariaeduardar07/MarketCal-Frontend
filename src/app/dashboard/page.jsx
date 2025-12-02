@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Calendar, Plus, Link2, TrendingUp } from "lucide-react";
 import styles from "./dashboard.module.css";
 import Header from "@/components/Header";
 import SideHeader from "@/components/sideHeader";
@@ -20,11 +21,9 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // Pegar token do localStorage e enviar no header para a rota interna
         const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
         if (!token) {
-          // Se não há token armazenado, redirecionar para login
           router.push("/Login");
           return;
         }
@@ -100,6 +99,9 @@ export default function Dashboard() {
                         <h1 className={styles.overviewTitle}>Visão Geral</h1>
                         <p className={styles.overviewSubtitle}>Acompanhe suas postagens em tempo real</p>
                       </div>
+                      <div className={styles.overviewIconBadge}>
+                        <TrendingUp size={24} strokeWidth={2.5} />
+                      </div>
                     </div>
                     
                     {/* Gráfico de Linha dentro do Overview */}
@@ -121,12 +123,16 @@ export default function Dashboard() {
                     </div>
 
                     {/* Ações */}
-                    
                     <div className={styles.actionCardAlt}>
-                      <div className={styles.actionIcon}>🔗</div>
+                      <div className={styles.actionIconWrapper}>
+                        <Link2 size={28} strokeWidth={2} />
+                      </div>
                       <h3 className={styles.actionTitle}>Conectar</h3>
                       <p className={styles.actionDesc}>Nova rede social</p>
-                      <button className={styles.actionBtnAlt}>Adicionar</button>
+                      <button className={styles.actionBtnAlt}>
+                        <Plus size={18} strokeWidth={2.5} />
+                        <span>Adicionar</span>
+                      </button>
                     </div>
                   </div>
                 </section>
