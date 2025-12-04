@@ -11,12 +11,14 @@ import SocialAccountsOverview from "@/components/SocialAccountsOverview";
 import UpcomingPosts from "@/components/UpcomingPosts";
 import PostStatusDistribution from "@/components/PostStatusDistribution";
 import MiniCalendar from "@/components/MiniCalendar";
+import { usePostsContext } from "@/context/PostsContext";
 
 export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const { posts: contextPosts } = usePostsContext();
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -152,7 +154,7 @@ export default function Dashboard() {
 
                 {/* Próximas Postagens */}
                 <section className={styles.section}>
-                  <UpcomingPosts posts={dashboardData?.upcomingPosts} />
+                  <UpcomingPosts posts={contextPosts.length > 0 ? contextPosts : dashboardData?.upcomingPosts} />
                 </section>
               </>
             )}

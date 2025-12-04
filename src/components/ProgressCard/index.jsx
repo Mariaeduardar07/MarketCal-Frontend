@@ -1,4 +1,5 @@
 import styles from './ProgressCard.module.css';
+import { Edit2, Trash2 } from 'lucide-react';
 
 const ProgressCard = ({ 
   image, 
@@ -8,7 +9,10 @@ const ProgressCard = ({
   timeLeft, 
   daysLeft, 
   teamMembers,
-  platform = 'instagram' // instagram ou twitter
+  platform = 'instagram',
+  postId,
+  onEdit,
+  onDelete
 }) => {
   return (
     <div className={styles.card}>
@@ -55,6 +59,27 @@ const ProgressCard = ({
               />
             ))}
           </div>
+        </div>
+
+        <div className={styles.cardActions}>
+          {onEdit && (
+            <button 
+              className={styles.actionBtn}
+              onClick={() => onEdit(postId)}
+              title="Editar post"
+            >
+              <Edit2 size={18} strokeWidth={2} />
+            </button>
+          )}
+          {onDelete && (
+            <button 
+              className={styles.actionBtn}
+              onClick={() => onDelete(postId)}
+              title="Deletar post"
+            >
+              <Trash2 size={18} strokeWidth={2} />
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -554,25 +554,30 @@
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1400px) {
+  .contentWrapper {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 1200px) {
+  .mainContent {
+    margin-left: 240px;
+  }
+
   .overviewSection {
     grid-template-columns: 1fr;
   }
 
   .quickActions {
     flex-direction: row;
-    flex-wrap: wrap;
+    gap: 16px;
   }
 
-  .calendarCard {
-    flex: 2;
-    min-width: 280px;
-  }
-
-  .actionCard,
+  .calendarCard,
   .actionCardAlt {
     flex: 1;
-    min-width: 180px;
+    min-width: 0;
   }
 
   .secondarySection {
@@ -580,33 +585,56 @@
   }
 
   .overviewMetrics {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pageContainer {
+    padding: 24px 16px;
   }
 }
 
 @media (max-width: 900px) {
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .overviewMetrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .secondarySection {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .mainContent {
-    margin-left: 0;
-  }
-
   .pageContainer {
-    padding: 20px 16px;
+    padding: 16px 12px;
   }
 
   .overviewCard {
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 16px;
     min-height: auto;
   }
 
+  .overviewHeader {
+    margin-bottom: 16px;
+  }
+
   .overviewTitle {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+    margin: 0 0 2px 0;
+  }
+
+  .overviewSubtitle {
+    font-size: 0.8rem;
+  }
+
+  .overviewChart {
+    min-height: 150px;
+    margin-bottom: 16px;
+    padding: 12px;
   }
 
   .overviewMetrics {
@@ -615,53 +643,159 @@
   }
 
   .miniStatCard {
-    padding: 14px 12px;
-  }
-
-  .miniStatValue {
-    font-size: 1.25rem;
-  }
-
-  .miniStatIcon {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-  }
-
-  .quickActions {
-    flex-direction: column;
-  }
-
-  .calendarCard,
-  .actionCard,
-  .actionCardAlt {
-    min-width: auto;
-  }
-
-  .chartCard {
-    padding: 20px;
-    border-radius: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .overviewTitle {
-    font-size: 1.2rem;
-  }
-
-  .overviewMetrics {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .miniStatCard {
     padding: 12px 10px;
   }
 
   .miniStatValue {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+
+  .miniStatIcon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+    margin: 0 auto 8px auto;
   }
 
   .miniStatLabel {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
+  }
+
+  .quickActions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .calendarCard,
+  .actionCardAlt {
+    min-width: auto;
+  }
+
+  .actionCardAlt {
+    padding: 16px;
+  }
+
+  .actionTitle {
+    font-size: 0.95rem;
+    margin: 0 0 4px 0;
+  }
+
+  .actionDesc {
+    font-size: 0.75rem;
+    margin: 0 0 10px 0;
+  }
+
+  .actionBtnAlt {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .actionIconWrapper {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 12px auto;
+  }
+
+  .chartCard,
+  .chartCardSmall {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .section {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 12px 8px;
+  }
+
+  .overviewCard {
+    padding: 16px;
+  }
+
+  .overviewHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .overviewIconBadge {
+    width: 40px;
+    height: 40px;
+    align-self: flex-start;
+  }
+
+  .overviewTitle {
+    font-size: 1.1rem;
+  }
+
+  .overviewSubtitle {
+    font-size: 0.75rem;
+  }
+
+  .overviewChart {
+    min-height: 120px;
+    margin-bottom: 12px;
+    padding: 8px;
+  }
+
+  .overviewMetrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .miniStatCard {
+    padding: 10px 8px;
+  }
+
+  .miniStatValue {
+    font-size: 1rem;
+  }
+
+  .miniStatIcon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .miniStatLabel {
+    font-size: 0.6rem;
+    line-height: 1;
+  }
+
+  .quickActions {
+    gap: 10px;
+  }
+
+  .calendarCard,
+  .actionCardAlt {
+    padding: 14px;
+  }
+
+  .actionIconWrapper {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 10px auto;
+  }
+
+  .actionTitle {
+    font-size: 0.9rem;
+  }
+
+  .actionDesc {
+    font-size: 0.7rem;
+  }
+
+  .actionBtnAlt {
+    padding: 7px 12px;
+    font-size: 0.75rem;
+    gap: 6px;
+  }
+
+  .chartCard,
+  .chartCardSmall {
+    padding: 12px;
   }
 }

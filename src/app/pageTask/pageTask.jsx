@@ -4,24 +4,57 @@ import { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import SideHeader from '../../components/sideHeader';
 import ProgressCard from '../../components/ProgressCard';
-import { fetchInfluencerTasks } from '../../data/mockData';
+import { fetchPosts, createPost, deletePost, updatePost } from '../../services/postService';
+import { usePostsContext } from '../../context/PostsContext';
 import styles from './pageTask.module.css';
 
 const PageTask = () => {
   const [tasks, setTasks] = useState({ instagram: [], twitter: [], linkedin: [] });
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [editingPost, setEditingPost] = useState(null);
+  const { addPost, updatePosts, removePost } = usePostsContext();
 
   useEffect(() => {
     const loadTasks = async () => {
-
       try {
         setLoading(true);
-        const tasksData = await fetchInfluencerTasks();
+        const postsData = await fetchPosts();
+        
+        // Se não tiver posts ainda, retorna estrutura vazia
+        if (!postsData || postsData.length === 0) {
+          setTasks({ instagram: [], twitter: [], linkedin: [] });
+          return;
+        }
+
+        // Aqui você vai agrupar por plataforma
+        // Como sua API não retorna plataforma diretamente no Post,
+        // você precisa ATUALIZAR o backend para incluir plataforma no modelo Post
+        // Por enquanto, todos os posts aparecem em "instagram" como exemplo
+        const tasksData = {
+          instagram: postsData.map(post => ({
+            id: post.id,
+            image: post.imageUrl || 'https://picsum.photos/400/300?random=' + post.id,
+            title: post.content.substring(0, 50) + (post.content.length > 50 ? '...' : ''),
+            category: post.status,
+            progress: post.status === 'PUBLISHED' ? 100 : 0,
+            timeLeft: post.scheduledAt,
+            daysLeft: calculateDaysLeft(post.scheduledAt),
+            teamMembers: [],
+            platform: 'instagram',
+            postId: post.id,
+            originalPost: post
+          })),
+          twitter: [],
+          linkedin: []
+        };
+
         setTasks(tasksData);
       } catch (error) {
-        console.error('Erro ao carregar tasks:', error);
+        console.error('Erro ao carregar posts:', error);
+        setTasks({ instagram: [], twitter: [], linkedin: [] });
       } finally {
         setLoading(false);
       }
@@ -41,6 +74,16 @@ const PageTask = () => {
     }
   };
 
+  // Função auxiliar para calcular dias restantes
+  const calculateDaysLeft = (scheduledAt) => {
+    if (!scheduledAt) return '0 dias';
+    const scheduled = new Date(scheduledAt);
+    const today = new Date();
+    const diffTime = Math.abs(scheduled - today);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays} dias`;
+  };
+
   const handleCreateNewPost = (platform) => {
     setSelectedPlatform(platform);
     setShowModal(true);
@@ -52,37 +95,136 @@ const PageTask = () => {
   };
 
   const handleSubmitPost = async (postData) => {
-    // Aqui seus amigos irão implementar o fetch para a API
-    console.log('Dados do post a serem enviados:', postData);
-    console.log('Plataforma:', selectedPlatform);
-    
-    /* Exemplo de como ficará a chamada API:
     try {
-      const response = await fetch('URL_DA_API/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Adicionar token de autenticação se necessário
-        },
-        body: JSON.stringify(postData)
-      });
+      setLoading(true);
+      // Chamar a API para criar o post
+      const newPost = await createPost(postData);
       
-      if (response.ok) {
-        const result = await response.json();
-        alert('Post criado com sucesso!');
-        handleCloseModal();
-      } else {
-        alert('Erro ao criar post');
-      }
+      // Adicionar o novo post à lista de tasks
+      const newTaskItem = {
+        id: newPost.id,
+        image: newPost.imageUrl || 'https://picsum.photos/400/300?random=' + newPost.id,
+        title: newPost.content.substring(0, 50) + (newPost.content.length > 50 ? '...' : ''),
+        category: newPost.status,
+        progress: newPost.status === 'PUBLISHED' ? 100 : 0,
+        timeLeft: newPost.scheduledAt,
+        daysLeft: calculateDaysLeft(newPost.scheduledAt),
+        teamMembers: [],
+        platform: selectedPlatform,
+        postId: newPost.id,
+        originalPost: newPost
+      };
+
+      // Adicionar ao estado local
+      setTasks(prev => ({
+        ...prev,
+        [selectedPlatform]: [...prev[selectedPlatform], newTaskItem]
+      }));
+
+      // 🔥 SINCRONIZAR COM O CONTEXT GLOBAL para atualizar dashboard
+      addPost(newPost);
+      updatePosts([newPost, ...(getPosts() || [])]);
+
+      alert(`✅ Post criado com sucesso para ${selectedPlatform}!`);
+      handleCloseModal();
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro ao criar post');
+      console.error('Erro ao criar post:', error);
+      alert(`❌ Erro ao criar post: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-    */
+  };
+
+  // Função auxiliar para pegar posts do context (exemplo)
+  const getPosts = () => {
+    // Aqui você pode adicionar lógica se necessário
+    return [];
+  };
+
+  // Função para editar post
+  const handleEditPost = (postId) => {
+    // Encontrar o post em qualquer plataforma
+    let post = null;
+    for (const platform in tasks) {
+      const found = tasks[platform].find(t => t.postId === postId);
+      if (found) {
+        post = found;
+        break;
+      }
+    }
     
-    // Feedback visual temporário
-    alert(`Post criado com sucesso para ${selectedPlatform}!\n\nDados:\n${JSON.stringify(postData, null, 2)}`);
-    handleCloseModal();
+    if (post) {
+      setEditingPost(post);
+      setShowEditModal(true);
+    }
+  };
+
+  // Função para salvar edição
+  const handleSaveEdit = async (updatedData) => {
+    try {
+      setLoading(true);
+      const result = await updatePost(editingPost.postId, updatedData);
+      
+      // Atualizar no estado local
+      setTasks(prev => {
+        const newTasks = { ...prev };
+        for (const platform in newTasks) {
+          newTasks[platform] = newTasks[platform].map(t => 
+            t.postId === editingPost.postId 
+              ? {
+                  ...t,
+                  title: result.content.substring(0, 50) + (result.content.length > 50 ? '...' : ''),
+                  category: result.status,
+                  progress: result.status === 'PUBLISHED' ? 100 : 0,
+                  originalPost: result
+                }
+              : t
+          );
+        }
+        return newTasks;
+      });
+
+      // Atualizar no context
+      updatePosts([result, ...getPosts()]);
+      
+      alert('✅ Post atualizado com sucesso!');
+      setShowEditModal(false);
+      setEditingPost(null);
+    } catch (error) {
+      console.error('Erro ao atualizar:', error);
+      alert(`❌ Erro ao atualizar post: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para deletar post
+  const handleDeletePost = async (postId) => {
+    if (!confirm('Tem certeza que deseja deletar este post?')) return;
+    
+    try {
+      setLoading(true);
+      await deletePost(postId);
+      
+      // Remover do estado local
+      setTasks(prev => {
+        const newTasks = { ...prev };
+        for (const platform in newTasks) {
+          newTasks[platform] = newTasks[platform].filter(t => t.postId !== postId);
+        }
+        return newTasks;
+      });
+
+      // Remover do context
+      removePost(postId);
+      
+      alert('✅ Post deletado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao deletar:', error);
+      alert(`❌ Erro ao deletar post: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -142,6 +284,9 @@ const PageTask = () => {
                 daysLeft={task.daysLeft}
                 teamMembers={task.teamMembers}
                 platform="instagram"
+                postId={task.postId}
+                onEdit={handleEditPost}
+                onDelete={handleDeletePost}
               />
             ))}
           </div>
@@ -187,6 +332,9 @@ const PageTask = () => {
                 daysLeft={task.daysLeft}
                 teamMembers={task.teamMembers}
                 platform="twitter"
+                postId={task.postId}
+                onEdit={handleEditPost}
+                onDelete={handleDeletePost}
               />
             ))}
           </div>
@@ -232,6 +380,9 @@ const PageTask = () => {
                 daysLeft={task.daysLeft}
                 teamMembers={task.teamMembers}
                 platform="linkedin"
+                postId={task.postId}
+                onEdit={handleEditPost}
+                onDelete={handleDeletePost}
               />
             ))}
           </div>
@@ -256,7 +407,118 @@ const PageTask = () => {
           </div>
         </div>
       )}
+
+      {/* Modal para editar post */}
+      {showEditModal && editingPost && (
+        <div className={styles.modalOverlay} onClick={() => setShowEditModal(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2>Editar Post</h2>
+              <button className={styles.closeButton} onClick={() => setShowEditModal(false)}>
+                ✕
+              </button>
+            </div>
+            <EditPostForm 
+              post={editingPost}
+              onSubmit={handleSaveEdit}
+              onCancel={() => setShowEditModal(false)}
+            />
+          </div>
+        </div>
+      )}
     </>
+  );
+};
+
+// Componente do formulário de edição de post
+const EditPostForm = ({ post, onSubmit, onCancel }) => {
+  const [postData, setPostData] = useState({
+    content: post.originalPost?.content || post.title,
+    imageUrl: post.originalPost?.imageUrl || '',
+    scheduledAt: post.originalPost?.scheduledAt || '',
+    status: post.originalPost?.status || 'SCHEDULED'
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPostData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!postData.content.trim()) {
+      alert('Por favor, preencha o conteúdo do post.');
+      return;
+    }
+    
+    onSubmit(postData);
+  };
+
+  return (
+    <form className={styles.postForm} onSubmit={handleSubmit}>
+      <div className={styles.formGroup}>
+        <label htmlFor="content">Conteúdo do Post*</label>
+        <textarea
+          id="content"
+          name="content"
+          value={postData.content}
+          onChange={handleInputChange}
+          placeholder="Escreva o conteúdo do seu post..."
+          rows={5}
+          required
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label htmlFor="imageUrl">URL da Imagem</label>
+        <input
+          type="url"
+          id="imageUrl"
+          name="imageUrl"
+          value={postData.imageUrl}
+          onChange={handleInputChange}
+          placeholder="https://exemplo.com/imagem.jpg (opcional)"
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label htmlFor="scheduledAt">Data de Agendamento*</label>
+        <input
+          type="date"
+          id="scheduledAt"
+          name="scheduledAt"
+          value={postData.scheduledAt}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label htmlFor="status">Status</label>
+        <select
+          id="status"
+          name="status"
+          value={postData.status}
+          onChange={handleInputChange}
+        >
+          <option value="SCHEDULED">Agendado</option>
+          <option value="DRAFT">Rascunho</option>
+          <option value="PUBLISHED">Publicado</option>
+        </select>
+      </div>
+
+      <div className={styles.formActions}>
+        <button type="button" className={styles.cancelButton} onClick={onCancel}>
+          Cancelar
+        </button>
+        <button type="submit" className={styles.submitButton}>
+          Salvar Alterações
+        </button>
+      </div>
+    </form>
   );
 };
 
