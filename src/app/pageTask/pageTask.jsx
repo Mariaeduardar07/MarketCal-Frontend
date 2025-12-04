@@ -15,7 +15,7 @@ const PageTask = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [editingPost, setEditingPost] = useState(null);
-  const { addPost, updatePosts, removePost } = usePostsContext();
+  const { addPost, updatePosts, removePost, posts: contextPosts } = usePostsContext();
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -23,33 +23,51 @@ const PageTask = () => {
         setLoading(true);
         const postsData = await fetchPosts();
         
+        // Combinar posts da API com posts do contexto
+        const allPosts = [...(contextPosts || []), ...(postsData || [])];
+        
         // Se não tiver posts ainda, retorna estrutura vazia
-        if (!postsData || postsData.length === 0) {
+        if (allPosts.length === 0) {
           setTasks({ instagram: [], twitter: [], linkedin: [] });
           return;
         }
 
-        // Aqui você vai agrupar por plataforma
-        // Como sua API não retorna plataforma diretamente no Post,
-        // você precisa ATUALIZAR o backend para incluir plataforma no modelo Post
-        // Por enquanto, todos os posts aparecem em "instagram" como exemplo
+        // Agrupar por plataforma
         const tasksData = {
-          instagram: postsData.map(post => ({
+          instagram: [],
+          twitter: [], 
+          linkedin: []
+        };
+
+        allPosts.forEach(post => {
+          const platform = (post.platform || 'instagram').toLowerCase();
+          const taskItem = {
             id: post.id,
-            image: post.imageUrl || 'https://picsum.photos/400/300?random=' + post.id,
+            image: post.imageUrl || `https://picsum.photos/400/300?random=${post.id}`,
             title: post.content.substring(0, 50) + (post.content.length > 50 ? '...' : ''),
-            category: post.status,
-            progress: post.status === 'PUBLISHED' ? 100 : 0,
+            category: post.status || 'SCHEDULED',
+            progress: (post.status === 'PUBLISHED' || post.status === 'published') ? 100 : 50,
             timeLeft: post.scheduledAt,
             daysLeft: calculateDaysLeft(post.scheduledAt),
             teamMembers: [],
-            platform: 'instagram',
+            platform: platform,
             postId: post.id,
-            originalPost: post
-          })),
-          twitter: [],
-          linkedin: []
-        };
+            originalPost: post,
+            influencer: post.influencer,
+            influencerAvatar: post.influencerAvatar
+          };
+
+          if (platform === 'instagram') {
+            tasksData.instagram.push(taskItem);
+          } else if (platform === 'twitter') {
+            tasksData.twitter.push(taskItem);
+          } else if (platform === 'linkedin') {
+            tasksData.linkedin.push(taskItem);
+          } else {
+            // Plataforma desconhecida vai para instagram por padrão
+            tasksData.instagram.push(taskItem);
+          }
+        });
 
         setTasks(tasksData);
       } catch (error) {
@@ -61,7 +79,7 @@ const PageTask = () => {
     };
 
     loadTasks();
-  }, []);
+  }, [contextPosts]); // Recarregar quando contextPosts mudar
 
   const scrollCards = (direction, section) => {
     const container = document.getElementById(`cards-${section}`);
