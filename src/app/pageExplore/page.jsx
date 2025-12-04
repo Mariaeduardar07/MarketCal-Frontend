@@ -19,7 +19,7 @@ export default function PageExplore() {
     const fetchInfluencers = async () => {
       try {
         setLoading(true);
-        const response = await fetchWithAuth('/users');
+        const response = await fetchWithAuth('/social-accounts');
         
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
@@ -27,26 +27,29 @@ export default function PageExplore() {
         }
         
         const data = await response.json();
+        console.log('🔍 Dados recebidos da API /social-accounts:', data);
         
-        // Mapear os dados dos usuários para o formato esperado
-        const mappedData = Array.isArray(data) ? data.map(user => ({
-          id: user.id || user._id,
-          name: user.name || user.username || 'Sem nome',
-          avatar: user.imageUrl || user.avatar || user.profileImage || '/image/logo.png',
-          category: user.category || user.niche || 'Influencer',
-          followers: user.followers || user.followersCount || '0',
-          engagement: user.engagement || user.engagementRate || '0%',
-          platform: user.platform || user.mainPlatform || 'Instagram',
-          platforms: user.platforms || [user.platform || 'Instagram'],
-          verified: user.verified || false,
-          location: user.location || 'Brasil',
-          ...user
+        // Mapear os dados das contas sociais para o formato esperado
+        const mappedData = Array.isArray(data) ? data.map(account => ({
+          id: account.id || account._id,
+          name: account.name || account.username || 'Sem nome',
+          avatar: account.imageUrl || account.avatar || account.profileImage || account.image || '/image/logo.png',
+          category: account.category || account.niche || 'Influencer',
+          followers: account.followers || account.followersCount || '0',
+          engagement: account.engagement || account.engagementRate || '0%',
+          platform: account.platform || account.mainPlatform || 'Instagram',
+          platforms: account.platforms || [account.platform || 'Instagram'],
+          verified: account.verified || false,
+          location: account.location || 'Brasil',
+          handle: account.handle,
+          ...account
         })) : [];
         
+        console.log('✅ Dados mapeados com avatares:', mappedData.map(u => ({ name: u.name, avatar: u.avatar })));
         setInfluencers(mappedData);
         setError(null);
       } catch (err) {
-        console.error('Erro ao carregar users:', err);
+        console.error('Erro ao carregar contas sociais:', err);
         setError(err.message || 'Erro ao carregar usuários');
       } finally {
         setLoading(false);
