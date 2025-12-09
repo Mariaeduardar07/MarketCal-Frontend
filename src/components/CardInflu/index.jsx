@@ -85,12 +85,14 @@ const CardInflu = ({
     e.preventDefault();
     e.stopPropagation();
     
+    const scheduledDateTime = `${postData.scheduledDate}T${postData.scheduledTime}:00`;
+    
     const newPost = {
       id: Date.now(), 
       content: postData.content,
       platform: platform.toLowerCase(),
       postType: postData.postType,
-      scheduledAt: `${postData.scheduledDate}T${postData.scheduledTime}:00Z`,
+      scheduledAt: scheduledDateTime,
       status: 'SCHEDULED',
       influencer: name,
       influencerAvatar: avatar,
@@ -98,10 +100,14 @@ const CardInflu = ({
       imageUrl: `https://picsum.photos/400/300?random=${Date.now()}`
     };
     
+    console.log('🆕 Nova postagem criada:', {
+      post: newPost,
+      scheduledAt: scheduledDateTime,
+      scheduledDate: new Date(scheduledDateTime).toISOString()
+    });
+    
     // Adicionar ao contexto (aparecerá na página de tasks)
     addPost(newPost);
-    
-    console.log('Nova postagem criada:', newPost);
     
     // Fechar modal após criar
     handleCloseModal();

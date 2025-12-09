@@ -3,11 +3,16 @@
 import { useState, useEffect } from "react";
 import styles from "./header.module.css";
 import { fetchWithAuth } from "@/config/api";
+import NotificationPanel from "../NotificationPanel";
+import { usePostsContext } from "@/context/PostsContext";
 
 export default function Header() {
-  const [searchValue, setSearchValue] = useState("");
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [viewedNotifications, setViewedNotifications] = useState(new Set());
+  const { posts } = usePostsContext();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -55,74 +60,97 @@ export default function Header() {
     loadUserData();
   }, []);
 
+  // Calcular notificações de posts próximos (3 dias)
+  useEffect(() => {
+    const calculateNotifications = () => {
+      const now = new Date();
+      const threeDaysFromNow = new Date();
+      threeDaysFromNow.setDate(now.getDate() + 3);
+
+      console.log('🔔 Header - Calculando notificações:', {
+        totalPosts: posts.length,
+        posts: posts,
+        now: now.toISOString(),
+        threeDaysFromNow: threeDaysFromNow.toISOString()
+      });
+
+      const upcomingPosts = posts.filter(post => {
+        // Filtrar posts visualizados
+        if (viewedNotifications.has(post.id)) return false;
+        
+        const dateToCheck = post.scheduledAt || post.scheduledDate;
+        if (!dateToCheck) {
+          console.log('❌ Post sem data:', post);
+          return false;
+        }
+        
+        const postDate = new Date(dateToCheck);
+        const isUpcoming = postDate >= now && postDate <= threeDaysFromNow;
+        
+        console.log('📅 Header - Verificando post:', {
+          id: post.id,
+          dateToCheck,
+          postDate: postDate.toISOString(),
+          now: now.toISOString(),
+          threeDaysFromNow: threeDaysFromNow.toISOString(),
+          isUpcoming
+        });
+        
+        return isUpcoming;
+      });
+
+      console.log('✅ Header - Posts próximos:', upcomingPosts.length, upcomingPosts);
+
+      setNotificationCount(upcomingPosts.length);
+    };
+
+    calculateNotifications();
+  }, [posts, viewedNotifications]);
+
   return (
     <div className={styles.header}>
       <div className={styles.leftSection}>
+        {userAvatar && (
+          <img 
+            src={userAvatar} 
+            alt={userName || 'User'} 
+            className={styles.userAvatar}
+          />
+        )}
         <h2 className={styles.title}>{userName ? `Olá, ${userName}` : "Olá"}</h2>
       </div>
 
       <div className={styles.rightSection}>
-        <div className={styles.searchBox}>
-          <input
-            type="text"
-            placeholder="Search Task"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            className={styles.searchInput}
-          />
-        </div>
-
-        <div className={styles.headerContent}>
-          <button className={styles.filterButton}>
-            <svg className={styles.icon} viewBox="0 0 24 24" fill="currentColor">
-              <rect x="3" y="3" width="7" height="7" />
-              <rect x="14" y="3" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-              <rect x="14" y="14" width="7" height="7" />
-            </svg>
-            <span>Category</span>
-          </button>
-
-          <button className={styles.filterButton}>
-            <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="18" x2="20" y2="18" />
-            </svg>
-            <span>Sort By: Deadline</span>
-          </button>
-
-          <button className={styles.iconButton}>
+        <div className={styles.notificationWrapper}>
+          <button 
+            className={styles.iconButton}
+            onClick={() => setShowNotifications(!showNotifications)}
+          >
             <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
               <path d="M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
+            {notificationCount > 0 && (
+              <span className={styles.notificationBadge}>
+                {notificationCount > 9 ? '9+' : notificationCount}
+              </span>
+            )}
           </button>
-
-          <button className={styles.iconButton}>
-            {userAvatar ? (
-              <img 
-                src={userAvatar} 
-                alt={userName || 'User'} 
-                className={styles.userAvatar}
-                onError={(e) => {
-                  // Se a imagem falhar ao carregar, mostra o ícone padrão
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
+          
+          {showNotifications && (
+            <>
+              <div 
+                className={styles.overlay} 
+                onClick={() => setShowNotifications(false)}
               />
-            ) : null}
-            <svg 
-              className={styles.icon} 
-              viewBox="0 0 24 24" 
-              fill="currentColor"
-              style={{ display: userAvatar ? 'none' : 'block' }}
-            >
-              <circle cx="12" cy="12" r="10" />
-              <circle cx="12" cy="10" r="2.5" fill="white" />
-              <path d="M12 15c-2 0-3 1-3 2v2h6v-2c0-1-1-2-3-2" fill="white" />
-            </svg>
-          </button>
+              <NotificationPanel 
+                posts={posts}
+                onClose={() => setShowNotifications(false)}
+                viewedNotifications={viewedNotifications}
+                setViewedNotifications={setViewedNotifications}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
