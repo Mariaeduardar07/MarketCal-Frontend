@@ -4,35 +4,64 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: linear-gradient(135deg, rgba(93, 212, 192, 0.12) 0%, rgba(71, 196, 172, 0.12) 100%),
+              rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 20px;
   overflow-y: auto;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+  }
 }
 
 .modalContent {
-  background: #ffffff;
-  border-radius: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 24px;
   max-width: 900px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   padding: 40px;
-  animation: slideIn 0.3s ease;
+  animation: modalAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3),
+              0 10px 25px rgba(93, 212, 192, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(93, 212, 192, 0.2);
 }
 
-@keyframes slideIn {
+.modalContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #5dd4c0 0%, #47c4ac 50%, #3db8a0 100%);
+  border-radius: 24px 24px 0 0;
+}
+
+@keyframes modalAppear {
   from {
+    transform: translateY(50px) scale(0.9);
     opacity: 0;
-    transform: translateY(30px);
   }
   to {
+    transform: translateY(0) scale(1);
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -40,28 +69,35 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: #f8fafc;
-  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  border: 2px solid rgba(93, 212, 192, 0.2);
+  background: rgba(93, 212, 192, 0.1);
+  color: #47c4ac;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
 }
 
 .closeButton:hover {
-  background: #e8f5ff;
-  transform: rotate(90deg);
+  background: linear-gradient(135deg, #5dd4c0 0%, #47c4ac 100%);
+  color: #ffffff;
+  transform: rotate(90deg) scale(1.1);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(93, 212, 192, 0.35);
+}
+
+.closeButton:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
 .closeButton svg {
   width: 20px;
   height: 20px;
-  color: #666;
 }
 
 /* Header Section */
@@ -71,7 +107,7 @@
   align-items: flex-start;
   margin-bottom: 40px;
   padding-bottom: 30px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid rgba(93, 212, 192, 0.15);
 }
 
 .avatarSection {
@@ -86,12 +122,12 @@
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #84e7d2;
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.2);
+  border: 4px solid #5dd4c0;
+  box-shadow: 0 4px 12px rgba(93, 212, 192, 0.3);
 }
 
 .verifiedBadge {
-  background: linear-gradient(135deg, #00D4AA 0%, #00E4B8 100%);
+  background: linear-gradient(135deg, #5dd4c0 0%, #47c4ac 100%);
   color: white;
   padding: 6px 16px;
   border-radius: 20px;
@@ -487,10 +523,52 @@
   background: #e8f5ff;
 }
 
+/* Actions Container */
+.actionsContainer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.btnEdit,
+.btnDelete {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.btnEdit {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+}
+
+.btnEdit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+}
+
+.btnDelete {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.btnDelete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
 .btnClose {
-  padding: 16px 48px;
-  border-radius: 12px;
-  font-size: 16px;
+  padding: 12px 32px;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;

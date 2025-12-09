@@ -79,6 +79,36 @@ export default function Register() {
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+
+        // Criar conta social/influenciador automaticamente
+        try {
+          console.log("🎯 Criando conta social para o usuário:", user.name);
+          
+          const socialAccountResponse = await axios.post(
+            "http://localhost:4000/social-accounts",
+            {
+              name: user.name,
+              platform: "Instagram",
+              handle: "@" + user.name.toLowerCase().replace(/\s+/g, ""),
+              followers: "0",
+              engagement: "0%",
+              category: "Criador de Conteúdo",
+              location: "Brasil",
+              userId: user.id
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          console.log("✅ Conta social criada com sucesso:", socialAccountResponse.data);
+        } catch (socialErr) {
+          console.error("⚠️ Erro ao criar conta social (não crítico):", socialErr);
+          // Não bloqueia o cadastro se falhar
+        }
       }
 
       setSuccess("Conta criada com sucesso! Redirecionando...");
