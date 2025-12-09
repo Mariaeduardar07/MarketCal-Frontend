@@ -12,13 +12,14 @@ import UpcomingPosts from "@/components/UpcomingPosts";
 import PostStatusDistribution from "@/components/PostStatusDistribution";
 import MiniCalendar from "@/components/MiniCalendar";
 import { usePostsContext } from "@/context/PostsContext";
+import { fetchPosts } from "@/services/postService";
 
 export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { posts: contextPosts } = usePostsContext();
+  const { posts: contextPosts, updatePosts } = usePostsContext();
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -28,6 +29,13 @@ export default function Dashboard() {
         if (!token) {
           router.push("/Login");
           return;
+        }
+
+        // Buscar posts da API e adicionar ao contexto
+        const postsData = await fetchPosts();
+        console.log('📊 Posts carregados do backend:', postsData);
+        if (postsData && postsData.length > 0) {
+          updatePosts(postsData);
         }
 
         const response = await fetch("/api/dashboard", {
@@ -58,7 +66,7 @@ export default function Dashboard() {
     };
 
     fetchDashboardData();
-  }, [router]);
+  }, [router, updatePosts]);
 
   return (
     <div className={styles.pageWrapper}>
